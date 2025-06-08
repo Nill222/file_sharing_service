@@ -2,6 +2,7 @@ package my.kukish;
 
 import com.sun.net.httpserver.HttpServer;
 import my.kukish.handler.DownloadHandler;
+import my.kukish.handler.StaticFileHandler;
 import my.kukish.handler.UploadHandler;
 import my.kukish.service.FileStorageService;
 
@@ -20,6 +21,7 @@ public class FileServer {
         FileStorageService storageService = new FileStorageService("uploads");
 
         HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
+        server.createContext("/", new StaticFileHandler("src/main/resources/index.html"));
         server.createContext("/upload", new UploadHandler(storageService));
         server.createContext("/download", new DownloadHandler(storageService));
 
@@ -28,3 +30,4 @@ public class FileServer {
         System.out.println("Сервер запущен на http://localhost:" + port);
     }
 }
+
